@@ -7,7 +7,8 @@ using UnityEngine;
 /// Command-line build entry point for CI.
 /// Invoked from GitHub Actions via:
 ///   -executeMethod BuildScript.BuildAndroid
-/// Builds every enabled scene in the Build Settings into Builds/Android/DuckWalk.apk.
+/// Rebuilds the main scene from the real imported assets (SceneRebuild), then
+/// builds every enabled scene in the Build Settings into Builds/Android/DuckWalk.apk.
 /// All Android player settings (package id, ARM64, API levels, IL2CPP, landscape)
 /// come from ProjectSettings/ProjectSettings.asset.
 /// </summary>
@@ -15,6 +16,11 @@ public static class BuildScript
 {
     public static void BuildAndroid()
     {
+        // Rebuild the scene from the actual imported assets before building.
+        // This guarantees renderer references point at Unity's real imported
+        // subassets instead of hand-typed file IDs in the scene YAML.
+        SceneRebuild.Rebuild();
+
         var scenes = EditorBuildSettings.scenes
             .Where(s => s.enabled)
             .Select(s => s.path)
