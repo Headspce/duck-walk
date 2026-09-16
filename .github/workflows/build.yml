@@ -54,8 +54,20 @@ jobs:
           username: ${{ secrets.UNITY_USERNAME }}
           password: ${{ secrets.UNITY_PASSWORD }}
 
+      - name: Restore signing keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          mkdir -p "${{ github.workspace }}/keystore"
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > "${{ github.workspace }}/keystore/duckwalk.p12"
+          ls -la "${{ github.workspace }}/keystore/"
+
       - name: Build APK
         uses: buildalon/unity-action@v3
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ github.workspace }}/keystore/duckwalk.p12
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         with:
           log-name: Android-Build
           build-target: Android

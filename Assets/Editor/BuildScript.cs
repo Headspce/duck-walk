@@ -35,6 +35,26 @@ public static class BuildScript
             Debug.Log($"BuildScript: bundleVersionCode set to {versionCode}");
         }
 
+        // Persistent signing: use the repo's keystore when the CI workflow
+        // provides it, so every build shares one signature and installs as an
+        // update over previous builds instead of conflicting with them.
+        var keystorePath = System.Environment.GetEnvironmentVariable("ANDROID_KEYSTORE_PATH");
+        var keystorePass = System.Environment.GetEnvironmentVariable("ANDROID_KEYSTORE_PASSWORD");
+        var keyPass = System.Environment.GetEnvironmentVariable("ANDROID_KEY_PASSWORD");
+        if (!string.IsNullOrEmpty(keystorePath) && File.Exists(keystorePath)
+            && !string.IsNullOrEmpty(keystorePass) && !string.IsNullOrEmpty(keyPass))
+        {
+            PlayerSettings.Android.keystoreName = keystorePath;
+            PlayerSettings.Android.keystorePass = keystorePass;
+            PlayerSettings.Android.keyaliasName = "duckwalk";
+            PlayerSettings.Android.keyaliasPass = keyPass;
+            Debug.Log("BuildScript: persistent signing keystore configured.");
+        }
+        else
+        {
+            Debug.LogWarning("BuildScript: no signing keystore provided; falling back to Unity debug key.");
+        }
+
         var outputDir = Path.Combine(Directory.GetCurrentDirectory(), "Builds", "Android");
         Directory.CreateDirectory(outputDir);
         var outputPath = Path.Combine(outputDir, "DuckWalk.apk");
