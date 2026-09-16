@@ -111,23 +111,29 @@ public static class SceneRebuild
                       " material=" + (mr.sharedMaterial != null ? "'" + mr.sharedMaterial.name + "'" : "null"));
         }
 
-        // --- Background: Tyler's cloud photo on a big unlit quad far behind
-        // the scene, sized generously so it fills the view on any phone
-        // aspect ratio. Unlit so scene lighting doesn't dim it. ---
+        // --- Background: Tyler's cloud photo on a plane directly behind the
+        // duck (his verified recipe: plane rotated 90 about X, new Standard
+        // material with the texture). V is flipped so the image isn't upside
+        // down after the X rotation. ---
         var bgTex = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Duck/cloud_bg.jpg");
         if (bgTex != null)
         {
-            var bg = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            var bg = GameObject.CreatePrimitive(PrimitiveType.Plane);
             bg.name = "Background";
             Object.DestroyImmediate(bg.GetComponent<MeshCollider>());
-            var bgMat = new Material(Shader.Find("Unlit/Texture"));
+            var bgMat = new Material(Shader.Find("Standard"));
             bgMat.name = "CloudBackground";
             bgMat.mainTexture = bgTex;
+            bgMat.mainTextureScale = new Vector2(1f, -1f);
+            bgMat.mainTextureOffset = new Vector2(0f, 1f);
             bg.GetComponent<MeshRenderer>().sharedMaterial = bgMat;
-            bg.transform.SetPositionAndRotation(new Vector3(0f, -1f, -18f), Quaternion.identity);
-            bg.transform.localScale = new Vector3(44f, 24f, 1f);
+            bg.transform.SetPositionAndRotation(
+                new Vector3(0f, 2f, -12f), Quaternion.Euler(90f, 0f, 0f));
+            // Plane is 10x10 in local XZ; after the X rotation local Z maps
+            // to world Y, so scale Z for height.
+            bg.transform.localScale = new Vector3(4f, 1f, 2.5f);
             SceneManager.MoveGameObjectToScene(bg, scene);
-            Debug.Log("SceneRebuild: cloud photo background attached.");
+            Debug.Log("SceneRebuild: cloud photo background (plane) attached.");
         }
         else
         {
@@ -156,9 +162,40 @@ public static class SceneRebuild
         lightGo.transform.rotation = new Quaternion(0.523711f, 0.254884f, -0.167831f, 0.795357f);
         SceneManager.MoveGameObjectToScene(lightGo, scene);
 
+        LogSceneContents();
+
         EditorSceneManager.SaveScene(scene, ScenePath);
         AssetDatabase.SaveAssets();
         Debug.Log("SceneRebuild: scene rebuilt and saved to " + ScenePath);
+    }
+
+    // Dumps every camera and renderer in the built scene so the build log
+    // shows exactly what will render on the phone.
+    private static void LogSceneContents()
+    {
+        Debug.Log("SceneRebuild: === scene contents ===");
+        foreach (var cam in Object.FindObjectsOfType<Camera>())
+        {
+            Debug.Log("SceneRebuild: CAMERA '" + cam.name +
+                      "' pos=" + cam.transform.position +
+                      " fwd=" + cam.transform.forward +
+                      " clearFlags=" + cam.clearFlags +
+                      " bg=" + cam.backgroundColor +
+                      " depth=" + cam.depth +
+                      " enabled=" + cam.enabled +
+                      " cullingMask=" + cam.cullingMask.value);
+        }
+        foreach (var r in Object.FindObjectsOfType<Renderer>())
+        {
+            var mat = r.sharedMaterial;
+            Debug.Log("SceneRebuild: RENDERER '" + r.gameObject.name +
+                      "' (" + r.GetType().Name + ")" +
+                      " mat=" + (mat != null ? "'" + mat.name + "'" : "null") +
+                      " shader=" + (mat != null && mat.shader != null ? "'" + mat.shader.name + "'" : "null") +
+                      " tex=" + (mat != null && mat.mainTexture != null ? "'" + mat.mainTexture.name + "'" : "null") +
+                      " boundsCenter=" + r.bounds.center +
+                      " boundsSize=" + r.bounds.size);
+        }
     }
 
     private static void LogImportedSubassets(string assetPath)
