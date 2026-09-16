@@ -13,14 +13,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fix Unity Hub path for Buildalon
-        # buildalon/unity-setup looks for the Hub at /opt/unityhub/unityhub,
-        # but ubuntu-latest ships Unity Hub 3.x elsewhere (e.g. /usr/bin).
+      - name: Pre-install Unity Hub (works around Buildalon hub-path bug)
+        # buildalon/unity-setup@v2 bundles unity-cli 2.x, which expects the Hub
+        # at the legacy path /opt/unityhub — but Hub 3.20+ installs to
+        # /usr/lib/unityhub, so its setup step fails. Install the Hub ourselves
+        # first and bridge the legacy path with a symlink.
         run: |
-          HUB_BIN="$(readlink -f "$(which unityhub)")"
-          echo "Unity Hub binary: $HUB_BIN"
-          sudo mkdir -p /opt/unityhub
-          sudo ln -sf "$HUB_BIN" /opt/unityhub/unityhub
+          set -e
+          curl -fsSL https://hub.unity3d.com/linux/keys/public | sudo gpg --dearmor -o /usr/share/keyrings/Unity_Technologies_ApS.gpg
+          echo "deb [signed-by=/usr/share/keyrings/Unity_Technologies_ApS.gpg] https://hub-dist.unity3d.com/artifactory/hub-debian-prod-local stable/" | sudo tee /etc/apt/sources.list.d/unityhub.list > /dev/null
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq unityhub
+          if [ ! -x /opt/unityhub/unityhub ]; then
+            if [ -x /usr/lib/unityhub/unityhub ]; then
+              HUB_DIR=/usr/lib/unityhub
+            else
+              HUB_DIR="$(dirname "$(readlink -f "$(command -v unityhub)")")"
+            fi
+            echo "Bridging /opt/unityhub -> $HUB_DIR"
+            sudo ln -s "$HUB_DIR" /opt/unityhub
+            sudo chmod -R 777 /opt/unityhub
+          fi
+          ls -la /opt/unityhub/unityhub
 
       - name: Setup Unity (2022.3.76f1 + Android modules)
         uses: buildalon/unity-setup@v2
