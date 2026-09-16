@@ -20,8 +20,8 @@ jobs:
         # first and bridge the legacy path with a symlink.
         run: |
           set -e
-          curl -fsSL https://hub.unity3d.com/linux/keys/public | sudo gpg --dearmor -o /usr/share/keyrings/Unity_Technologies_ApS.gpg
-          echo "deb [signed-by=/usr/share/keyrings/Unity_Technologies_ApS.gpg] https://hub-dist.unity3d.com/artifactory/hub-debian-prod-local stable/" | sudo tee /etc/apt/sources.list.d/unityhub.list > /dev/null
+          curl -fsSL https://hub.unity3d.com/linux/keys/public | gpg --dearmor | sudo tee /usr/share/keyrings/Unity_Technologies_ApS.gpg > /dev/null
+          echo "deb [signed-by=/usr/share/keyrings/Unity_Technologies_ApS.gpg] https://hub.unity3d.com/linux/repos/deb stable main" | sudo tee /etc/apt/sources.list.d/unityhub.list > /dev/null
           sudo apt-get update -qq
           sudo apt-get install -y -qq unityhub
           if [ ! -x /opt/unityhub/unityhub ]; then
