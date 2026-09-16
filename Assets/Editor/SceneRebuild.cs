@@ -38,6 +38,26 @@ public static class SceneRebuild
         duck.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0f, 90f, 0f));
         SceneManager.MoveGameObjectToScene(duck, scene);
 
+        // --- Duck material: make sure the base color texture is assigned. ---
+        var baseTex = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Duck/duck_basecolor.png");
+        if (baseTex == null)
+            Debug.LogWarning("SceneRebuild: Assets/Duck/duck_basecolor.png not found.");
+        foreach (var smr in duck.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+        {
+            var mat = smr.sharedMaterial;
+            Debug.Log("SceneRebuild: SkinnedMeshRenderer on '" + smr.gameObject.name +
+                      "' material='" + (mat != null ? mat.name : "null") +
+                      "' texture=" + (mat != null && mat.mainTexture != null ? mat.mainTexture.name : "null"));
+            if (mat != null && mat.mainTexture == null && baseTex != null)
+            {
+                var fixedMat = new Material(Shader.Find("Standard"));
+                fixedMat.name = mat.name + "_Textured";
+                fixedMat.mainTexture = baseTex;
+                smr.sharedMaterial = fixedMat;
+                Debug.Log("SceneRebuild: assigned duck_basecolor.png to '" + fixedMat.name + "'.");
+            }
+        }
+
         // --- Walk animation: the real take inside the FBX. Unity's importer also
         // generates a '__preview__*' clip for the model preview window; never
         // attach that one, it may not contain the real curves. ---
@@ -83,11 +103,19 @@ public static class SceneRebuild
         ground.name = "Ground";
         ground.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         SceneManager.MoveGameObjectToScene(ground, scene);
+        foreach (var mr in ground.GetComponentsInChildren<MeshRenderer>(true))
+        {
+            var mf = mr.GetComponent<MeshFilter>();
+            Debug.Log("SceneRebuild: ground renderer mesh=" +
+                      (mf != null && mf.sharedMesh != null ? "'" + mf.sharedMesh.name + "'" : "null") +
+                      " material=" + (mr.sharedMaterial != null ? "'" + mr.sharedMaterial.name + "'" : "null"));
+        }
 
         // --- Camera: guaranteed to face the duck via LookAt. ---
         var camGo = new GameObject("Main Camera");
         camGo.tag = "MainCamera";
         var camera = camGo.AddComponent<Camera>();
+        camera.clearFlags = CameraClearFlags.SolidColor;
         camera.backgroundColor = new Color(0.55f, 0.78f, 0.95f);
         camera.fieldOfView = 40f;
         camera.nearClipPlane = 0.1f;

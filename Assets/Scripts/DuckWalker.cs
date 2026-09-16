@@ -12,8 +12,11 @@ public class DuckWalker : MonoBehaviour
     public float speed = 1.2f;
     public float minX = -5f;
     public float maxX = 5f;
+    public float turnSpeed = 10f; // how quickly the duck turns around
+    public float accel = 8f;      // how quickly it speeds up / slows down
 
     private Animation anim;
+    private float velocity; // smoothed -1..1 drive signal
 
     void Start()
     {
@@ -33,10 +36,21 @@ public class DuckWalker : MonoBehaviour
     {
         float input = TouchControls.moveInput;
 
-        if (Mathf.Abs(input) > 0.01f)
+        // Ease toward the target direction instead of jumping to full speed:
+        // abrupt starts, stops, and direction flips read as jitter.
+        velocity = Mathf.MoveTowards(velocity, input, accel * Time.deltaTime);
+
+        if (Mathf.Abs(velocity) > 0.01f)
         {
-            transform.position += Vector3.right * input * speed * Time.deltaTime;
-            transform.rotation = Quaternion.Euler(0f, input > 0f ? 90f : -90f, 0f);
+            transform.position += Vector3.right * velocity * speed * Time.deltaTime;
+
+            // Turn smoothly instead of snapping 180 degrees instantly.
+            float targetY = velocity > 0f ? 90f : -90f;
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.Euler(0f, targetY, 0f),
+                Mathf.Clamp01(turnSpeed * Time.deltaTime));
+
             if (anim != null && anim.clip != null && !anim.isPlaying)
                 anim.Play();
         }
