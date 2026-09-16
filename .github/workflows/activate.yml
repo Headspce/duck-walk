@@ -12,18 +12,18 @@ jobs:
     steps:
       - name: Create manual activation file
         run: |
-          cd /github/workspace
+          cd "$GITHUB_WORKSPACE"
           /opt/unity/Editor/Unity \
             -batchmode -nographics -createManualActivationFile \
-            -logFile /github/workspace/alf-request.log -quit || true
+            -logFile "$GITHUB_WORKSPACE/alf-request.log" -quit || true
           echo "--- workspace contents ---"
-          ls -la /github/workspace/
-          test -f /github/workspace/Unity_v*.alf
+          ls -la "$GITHUB_WORKSPACE/"
+          test -f "$GITHUB_WORKSPACE"/Unity_v*.alf
 
       - name: Upload .alf artifact
         uses: actions/upload-artifact@v4
         with:
           name: manual-activation-file
           path: |
-            /github/workspace/Unity_v*.alf
-            /github/workspace/alf-request.log
+            ${{ github.workspace }}/Unity_v*.alf
+            ${{ github.workspace }}/alf-request.log
