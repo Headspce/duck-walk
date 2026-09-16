@@ -35,7 +35,9 @@ public static class SceneRebuild
         }
         var duck = (GameObject)Object.Instantiate(duckPrefab);
         duck.name = "Duck";
-        duck.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0f, 90f, 0f));
+        // Feet rest on the ground plane (top surface at y=0); lowest mesh
+        // vertex sits ~0.065 below the duck origin.
+        duck.transform.SetPositionAndRotation(new Vector3(0f, 0.07f, 0f), Quaternion.Euler(0f, 90f, 0f));
         SceneManager.MoveGameObjectToScene(duck, scene);
 
         // --- Duck material: make sure the base color texture is assigned. ---
@@ -101,7 +103,12 @@ public static class SceneRebuild
             ground.transform.localScale = new Vector3(2f, 1f, 2f);
         }
         ground.name = "Ground";
-        ground.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+        // The FBX imports standing upright (20 wide, 20 TALL, 0.2 thick) --
+        // it was a vertical black wall filling the camera's whole view.
+        // Lay it flat: -90 deg about X maps local Z (thickness) to world Y.
+        // Center at y=-0.1 so the top surface sits exactly at y=0.
+        ground.transform.SetPositionAndRotation(
+            new Vector3(0f, -0.1f, 0f), Quaternion.Euler(-90f, 0f, 0f));
         SceneManager.MoveGameObjectToScene(ground, scene);
         foreach (var mr in ground.GetComponentsInChildren<MeshRenderer>(true))
         {
