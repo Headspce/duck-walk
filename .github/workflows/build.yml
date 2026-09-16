@@ -13,6 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Fix Unity Hub path for Buildalon
+        # buildalon/unity-setup looks for the Hub at /opt/unityhub/unityhub,
+        # but ubuntu-latest ships Unity Hub 3.x elsewhere (e.g. /usr/bin).
+        run: |
+          HUB_BIN="$(readlink -f "$(which unityhub)")"
+          echo "Unity Hub binary: $HUB_BIN"
+          sudo mkdir -p /opt/unityhub
+          sudo ln -sf "$HUB_BIN" /opt/unityhub/unityhub
+
       - name: Setup Unity (2022.3.76f1 + Android modules)
         uses: buildalon/unity-setup@v2
         with:
