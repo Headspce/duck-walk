@@ -183,7 +183,7 @@ public static class SceneRebuild
                       " bg=" + cam.backgroundColor +
                       " depth=" + cam.depth +
                       " enabled=" + cam.enabled +
-                      " cullingMask=" + cam.cullingMask.value);
+                      " cullingMask=" + cam.cullingMask);
         }
         foreach (var r in Object.FindObjectsOfType<Renderer>())
         {
