@@ -109,12 +109,12 @@ Transform:
   m_GameObject: {fileID: 1}
   serializedVersion: 10
   m_LocalRotation: {x: 0.000000, y: 0.707107, z: 0.000000, w: 0.707107}
-  m_LocalPosition: {x: -5.0000, y: 0.0000, z: 0.0000}
+  m_LocalPosition: {x: 0.0000, y: 0.0000, z: 0.0000}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 11
-  - 51
+  - {fileID: 11}
+  - {fileID: 51}
   m_Father: {fileID: 0}
 
 --- !u!95 &3
@@ -191,7 +191,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 200
+  - {fileID: 200}
   m_Father: {fileID: 2}
 
 --- !u!1 &100
@@ -224,7 +224,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 201
+  - {fileID: 201}
   m_Father: {fileID: 11}
 
 --- !u!1 &101
@@ -257,7 +257,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 202
+  - {fileID: 202}
   m_Father: {fileID: 200}
 
 --- !u!1 &102
@@ -290,7 +290,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 203
+  - {fileID: 203}
   m_Father: {fileID: 201}
 
 --- !u!1 &103
@@ -323,10 +323,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 204
-  - 220
-  - 236
-  - 242
+  - {fileID: 204}
+  - {fileID: 220}
+  - {fileID: 236}
+  - {fileID: 242}
   m_Father: {fileID: 202}
 
 --- !u!1 &104
@@ -359,7 +359,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 205
+  - {fileID: 205}
   m_Father: {fileID: 203}
 
 --- !u!1 &105
@@ -392,7 +392,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 206
+  - {fileID: 206}
   m_Father: {fileID: 204}
 
 --- !u!1 &106
@@ -425,7 +425,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 207
+  - {fileID: 207}
   m_Father: {fileID: 205}
 
 --- !u!1 &107
@@ -458,9 +458,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 208
-  - 212
-  - 216
+  - {fileID: 208}
+  - {fileID: 212}
+  - {fileID: 216}
   m_Father: {fileID: 206}
 
 --- !u!1 &108
@@ -493,7 +493,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 209
+  - {fileID: 209}
   m_Father: {fileID: 207}
 
 --- !u!1 &109
@@ -526,7 +526,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 210
+  - {fileID: 210}
   m_Father: {fileID: 208}
 
 --- !u!1 &110
@@ -559,7 +559,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 211
+  - {fileID: 211}
   m_Father: {fileID: 209}
 
 --- !u!1 &111
@@ -624,7 +624,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 213
+  - {fileID: 213}
   m_Father: {fileID: 207}
 
 --- !u!1 &113
@@ -657,7 +657,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 214
+  - {fileID: 214}
   m_Father: {fileID: 212}
 
 --- !u!1 &114
@@ -690,7 +690,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 215
+  - {fileID: 215}
   m_Father: {fileID: 213}
 
 --- !u!1 &115
@@ -755,7 +755,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 217
+  - {fileID: 217}
   m_Father: {fileID: 207}
 
 --- !u!1 &117
@@ -788,7 +788,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 218
+  - {fileID: 218}
   m_Father: {fileID: 216}
 
 --- !u!1 &118
@@ -821,7 +821,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 219
+  - {fileID: 219}
   m_Father: {fileID: 217}
 
 --- !u!1 &119
@@ -886,7 +886,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 221
+  - {fileID: 221}
   m_Father: {fileID: 203}
 
 --- !u!1 &121
@@ -919,7 +919,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 222
+  - {fileID: 222}
   m_Father: {fileID: 220}
 
 --- !u!1 &122
@@ -952,7 +952,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 223
+  - {fileID: 223}
   m_Father: {fileID: 221}
 
 --- !u!1 &123
@@ -985,9 +985,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 224
-  - 228
-  - 232
+  - {fileID: 224}
+  - {fileID: 228}
+  - {fileID: 232}
   m_Father: {fileID: 222}
 
 --- !u!1 &124
@@ -1020,7 +1020,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 225
+  - {fileID: 225}
   m_Father: {fileID: 223}
 
 --- !u!1 &125
@@ -1053,7 +1053,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 226
+  - {fileID: 226}
   m_Father: {fileID: 224}
 
 --- !u!1 &126
@@ -1086,7 +1086,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 227
+  - {fileID: 227}
   m_Father: {fileID: 225}
 
 --- !u!1 &127
@@ -1151,7 +1151,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 229
+  - {fileID: 229}
   m_Father: {fileID: 223}
 
 --- !u!1 &129
@@ -1184,7 +1184,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 230
+  - {fileID: 230}
   m_Father: {fileID: 228}
 
 --- !u!1 &130
@@ -1217,7 +1217,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 231
+  - {fileID: 231}
   m_Father: {fileID: 229}
 
 --- !u!1 &131
@@ -1282,7 +1282,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 233
+  - {fileID: 233}
   m_Father: {fileID: 223}
 
 --- !u!1 &133
@@ -1315,7 +1315,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 234
+  - {fileID: 234}
   m_Father: {fileID: 232}
 
 --- !u!1 &134
@@ -1348,7 +1348,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 235
+  - {fileID: 235}
   m_Father: {fileID: 233}
 
 --- !u!1 &135
@@ -1413,7 +1413,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 237
+  - {fileID: 237}
   m_Father: {fileID: 203}
 
 --- !u!1 &137
@@ -1446,7 +1446,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 238
+  - {fileID: 238}
   m_Father: {fileID: 236}
 
 --- !u!1 &138
@@ -1479,7 +1479,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 239
+  - {fileID: 239}
   m_Father: {fileID: 237}
 
 --- !u!1 &139
@@ -1512,7 +1512,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 240
+  - {fileID: 240}
   m_Father: {fileID: 238}
 
 --- !u!1 &140
@@ -1545,7 +1545,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 241
+  - {fileID: 241}
   m_Father: {fileID: 239}
 
 --- !u!1 &141
@@ -1610,7 +1610,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 243
+  - {fileID: 243}
   m_Father: {fileID: 203}
 
 --- !u!1 &143
@@ -1643,7 +1643,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - 244
+  - {fileID: 244}
   m_Father: {fileID: 242}
 
 --- !u!1 &144
