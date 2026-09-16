@@ -38,8 +38,12 @@ public static class SceneRebuild
         duck.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0f, 90f, 0f));
         SceneManager.MoveGameObjectToScene(duck, scene);
 
-        // --- Walk animation: first AnimationClip subasset inside the FBX. ---
-        var clip = AssetDatabase.LoadAllAssetsAtPath(DuckFbx).OfType<AnimationClip>().FirstOrDefault();
+        // --- Walk animation: the real take inside the FBX. Unity's importer also
+        // generates a '__preview__*' clip for the model preview window; never
+        // attach that one, it may not contain the real curves. ---
+        var clips = AssetDatabase.LoadAllAssetsAtPath(DuckFbx).OfType<AnimationClip>().ToList();
+        var clip = clips.FirstOrDefault(c => !c.name.StartsWith("__preview"))
+                   ?? clips.FirstOrDefault();
         var anim = duck.AddComponent<Animation>();
         if (clip != null)
         {
