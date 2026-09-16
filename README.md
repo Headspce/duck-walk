@@ -1,7 +1,8 @@
 # Duck Walk
 
 A tiny Android game: an animated duck walks across the screen and wraps around.
-Built with Unity 2022.3.76f1, built in CI with [game-ci](https://game.ci).
+Built with Unity 2022.3.76f1, built in CI with
+[Buildalon](https://www.buildalon.com) GitHub Actions.
 
 This work is based on “Duck_Walk (Free)” by Nyilonelycompany, licensed under CC-BY-4.0.
 
@@ -12,23 +13,23 @@ This work is based on “Duck_Walk (Free)” by Nyilonelycompany, licensed under
 - `Assets/Duck/ground.fbx` — ground slab
 - `Assets/Scenes/Main.unity` — duck (legacy `Animation` component, walk on loop),
   ground, directional light, camera, `DuckWalker` + `Credits` scripts
-- `.github/workflows/build.yml` — CI build producing the APK
-- `.github/workflows/activate.yml` — generates the Unity manual activation file
+- `Assets/Editor/BuildScript.cs` — command-line entry point that builds the APK
+- `.github/workflows/build.yml` — CI pipeline: install Unity, activate a
+  Personal license, build, upload the APK
 
 ## Build the APK (GitHub Actions)
 
 The project builds itself in the cloud — no local Unity install needed.
 
-1. Create a repo (e.g. `github.com/progranimation/duck-walk`) and push this project
-   to the `main` branch.
-2. Activate Unity for CI (one-time setup):
-   1. Run the **Request Unity activation file** workflow (Actions tab).
-   2. Download the `.alf` artifact it uploads.
-   3. While signed into your Unity ID, upload the `.alf` at
-      <https://license.unity3d.com/manual> and download the resulting license.
-   4. Save the **contents of the license file** as a repository secret named
-      `UNITY_LICENSE` (Settings → Secrets and variables → Actions).
-3. Run the **Build Android APK** workflow (or just push to `main`).
+1. Push this project to the `main` branch of your repo.
+2. One-time setup — save your Unity ID as repository secrets
+   (repo → Settings → Secrets and variables → Actions → New repository secret):
+   - `UNITY_USERNAME` — the email address of your Unity ID
+   - `UNITY_PASSWORD` — your Unity ID password
+   (These activate a free Personal license on the CI runner at build time.
+   Remove them when you're done shipping builds.)
+3. Run the **Build Android APK** workflow (Actions tab → Run workflow),
+   or just push to `main`.
 4. Download the `duckwalk-apk` artifact — inside is `DuckWalk.apk`, ready to
    install on an ARM64 Android device (Android 7.0+, API 24+).
 
