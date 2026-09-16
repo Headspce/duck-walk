@@ -106,9 +106,10 @@ public static class SceneRebuild
         // The FBX imports standing upright (20 wide, 20 TALL, 0.2 thick) --
         // it was a vertical black wall filling the camera's whole view.
         // Lay it flat: -90 deg about X maps local Z (thickness) to world Y.
-        // Center at y=-0.1 so the top surface sits exactly at y=0.
+        // The mesh spans local y in [-0.2, 0] (top face at the origin), so
+        // position y=0 puts the top surface exactly at y=0 for the duck's feet.
         ground.transform.SetPositionAndRotation(
-            new Vector3(0f, -0.1f, 0f), Quaternion.Euler(-90f, 0f, 0f));
+            Vector3.zero, Quaternion.Euler(-90f, 0f, 0f));
         SceneManager.MoveGameObjectToScene(ground, scene);
         foreach (var mr in ground.GetComponentsInChildren<MeshRenderer>(true))
         {
