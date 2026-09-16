@@ -111,6 +111,29 @@ public static class SceneRebuild
                       " material=" + (mr.sharedMaterial != null ? "'" + mr.sharedMaterial.name + "'" : "null"));
         }
 
+        // --- Background: Tyler's cloud photo on a big unlit quad far behind
+        // the scene, sized generously so it fills the view on any phone
+        // aspect ratio. Unlit so scene lighting doesn't dim it. ---
+        var bgTex = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Duck/cloud_bg.jpg");
+        if (bgTex != null)
+        {
+            var bg = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            bg.name = "Background";
+            Object.DestroyImmediate(bg.GetComponent<MeshCollider>());
+            var bgMat = new Material(Shader.Find("Unlit/Texture"));
+            bgMat.name = "CloudBackground";
+            bgMat.mainTexture = bgTex;
+            bg.GetComponent<MeshRenderer>().sharedMaterial = bgMat;
+            bg.transform.SetPositionAndRotation(new Vector3(0f, -1f, -18f), Quaternion.identity);
+            bg.transform.localScale = new Vector3(44f, 24f, 1f);
+            SceneManager.MoveGameObjectToScene(bg, scene);
+            Debug.Log("SceneRebuild: cloud photo background attached.");
+        }
+        else
+        {
+            Debug.LogWarning("SceneRebuild: Assets/Duck/cloud_bg.jpg not found; no photo background.");
+        }
+
         // --- Camera: guaranteed to face the duck via LookAt. ---
         var camGo = new GameObject("Main Camera");
         camGo.tag = "MainCamera";
