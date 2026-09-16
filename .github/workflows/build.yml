@@ -40,7 +40,7 @@ jobs:
           printf '#!/bin/bash\nxvfb-run --auto-servernum /opt/unityhub/unityhub "$@" 2>/dev/null' | sudo tee /usr/bin/unity-hub > /dev/null
           sudo chmod 777 /usr/bin/unity-hub
 
-      - name: Setup Unity (2022.3.76f1 + Android modules)
+      - name: Setup Unity (2022.3.62f1 + Android modules)
         uses: buildalon/unity-setup@v2
         with:
           # Editor version is auto-detected from ProjectSettings/ProjectVersion.txt
@@ -73,4 +73,4 @@ jobs:
         if: always()
         with:
           name: build-log
-          path: '*.log'
+          path: 'Builds/Logs/*.log'

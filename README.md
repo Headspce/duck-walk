@@ -1,7 +1,7 @@
 # Duck Walk
 
 A tiny Android game: an animated duck walks across the screen and wraps around.
-Built with Unity 2022.3.76f1, built in CI with
+Built with Unity 2022.3.62f1, built in CI with
 [Buildalon](https://www.buildalon.com) GitHub Actions.
 
 This work is based on “Duck_Walk (Free)” by Nyilonelycompany, licensed under CC-BY-4.0.
@@ -35,7 +35,7 @@ The project builds itself in the cloud — no local Unity install needed.
 
 ## Notes
 
-- Build config: Unity 2022.3.76f1, IL2CPP, ARM64 only, min API 24,
+- Build config: Unity 2022.3.62f1, IL2CPP, ARM64 only, min API 24,
   target API 34, `androidVersionCode` = the GitHub run number, APK output.
 - The duck model source (`duck_walk_free.zip`) is not in this repo; the
   conversion script `Tools/convert_duck.py` documents the full glTF → FBX
