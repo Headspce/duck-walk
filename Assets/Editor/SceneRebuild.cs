@@ -120,16 +120,18 @@ public static class SceneRebuild
         }
 
         // --- Background: Tyler's cloud photo on a plane directly behind the
-        // duck (his verified recipe: plane rotated 90 about X, new Standard
-        // material with the texture). V is flipped so the image isn't upside
-        // down after the X rotation. ---
+        // duck (his verified recipe: plane rotated 90 about X, new material
+        // with the texture). Unlit/Texture so the photo renders full-bright
+        // like a skybox -- a lit Standard material goes black here because
+        // the scene's directional light shines from behind the plane.
+        // V is flipped so the image isn't upside down after the X rotation. ---
         var bgTex = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Duck/cloud_bg.jpg");
         if (bgTex != null)
         {
             var bg = GameObject.CreatePrimitive(PrimitiveType.Plane);
             bg.name = "Background";
             Object.DestroyImmediate(bg.GetComponent<MeshCollider>());
-            var bgMat = new Material(Shader.Find("Standard"));
+            var bgMat = new Material(Shader.Find("Unlit/Texture"));
             bgMat.name = "CloudBackground";
             bgMat.mainTexture = bgTex;
             bgMat.mainTextureScale = new Vector2(1f, -1f);

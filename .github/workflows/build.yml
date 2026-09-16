@@ -80,6 +80,38 @@ jobs:
           path: Builds/Android/*.apk
           if-no-files-found: error
 
+      - name: Capture scene screenshot (visual verification)
+        # Renders the rebuilt scene from the Main Camera so the result can be
+        # eyeballed without a phone. Needs a GL context: xvfb + Mesa software
+        # rendering. Non-fatal: a screenshot failure must not fail the build.
+        continue-on-error: true
+        run: |
+          set -e
+          EDITOR_BIN=""
+          for cand in \
+            "$HOME/Unity/Hub/Editor/2022.3.62f1/Editor/Unity" \
+            "/opt/Unity/Hub/Editor/2022.3.62f1/Editor/Unity" \
+            "/usr/local/Unity/Hub/Editor/2022.3.62f1/Editor/Unity"; do
+            if [ -x "$cand" ]; then EDITOR_BIN="$cand"; break; fi
+          done
+          if [ -z "$EDITOR_BIN" ]; then
+            EDITOR_BIN="$(find "$HOME/Unity" /opt/unityhub -maxdepth 6 -name Unity -type f 2>/dev/null | head -1)"
+          fi
+          echo "Editor: $EDITOR_BIN"
+          xvfb-run -a "$EDITOR_BIN" \
+            -quit -batchmode \
+            -projectPath "${{ github.workspace }}" \
+            -executeMethod ScreenshotTool.Capture \
+            -logFile Builds/Logs/Screenshot.log || echo "screenshot run exited non-zero"
+
+      - name: Upload screenshot
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshot
+          path: 'Screenshots/*.png'
+          if-no-files-found: warn
+
       - name: Upload build log
         uses: actions/upload-artifact@v4
         if: always()
