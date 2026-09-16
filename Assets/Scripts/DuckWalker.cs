@@ -1,9 +1,11 @@
 using UnityEngine;
 
-// Moves the duck across the screen and wraps it around.
-// Also guarantees the imported walk clip loops: the FBX .meta requests the
-// Legacy animation type, and as a safety net we force the legacy flag and
-// loop wrap mode here in case the .meta was not honoured on import.
+// Player-controlled duck: the on-screen touch buttons (TouchControls.moveInput)
+// drive left/right movement. The walk clip plays while moving, the duck faces
+// its travel direction, and it wraps around the screen edges.
+// The FBX .meta requests the Legacy animation type, and as a safety net we
+// force the legacy flag and loop wrap mode here in case the .meta was not
+// honoured on import.
 [RequireComponent(typeof(Animation))]
 public class DuckWalker : MonoBehaviour
 {
@@ -25,20 +27,27 @@ public class DuckWalker : MonoBehaviour
             }
         }
         anim.wrapMode = WrapMode.Loop;
-        if (anim.clip != null && !anim.isPlaying)
-            anim.Play();
     }
 
     void Update()
     {
-        transform.position += Vector3.right * speed * Time.deltaTime;
-        if (transform.position.x > maxX)
+        float input = TouchControls.moveInput;
+
+        if (Mathf.Abs(input) > 0.01f)
         {
-            Vector3 p = transform.position;
-            p.x = minX;
-            transform.position = p;
+            transform.position += Vector3.right * input * speed * Time.deltaTime;
+            transform.rotation = Quaternion.Euler(0f, input > 0f ? 90f : -90f, 0f);
+            if (anim != null && anim.clip != null && !anim.isPlaying)
+                anim.Play();
         }
-        if (anim != null && anim.clip != null && !anim.isPlaying)
-            anim.Play();
+        else if (anim != null && anim.isPlaying)
+        {
+            anim.Stop();
+        }
+
+        Vector3 p = transform.position;
+        if (p.x > maxX) p.x = minX;
+        else if (p.x < minX) p.x = maxX;
+        transform.position = p;
     }
 }

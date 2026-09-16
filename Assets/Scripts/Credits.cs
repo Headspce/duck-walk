@@ -5,7 +5,7 @@ public class Credits : MonoBehaviour
 {
     void OnGUI()
     {
-        GUI.Label(new Rect(12, Screen.height - 34, Screen.width - 24, 28),
+        GUI.Label(new Rect(12, 12, Screen.width - 24, 28),
             "Duck_Walk (Free) by Nyilonelycompany, licensed under CC-BY-4.0");
     }
 }

@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 3}
   - component: {fileID: 4}
   - component: {fileID: 5}
+  - component: {fileID: 6}
   m_Layer: 0
   m_Name: Duck
   m_TagString: Untagged
@@ -159,6 +160,19 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 043875bd3fad430abdc4f72321d96bc9, type: 3}
   m_Name: Credits
+  m_EditorClassIdentifier: 
+
+--- !u!114 &6
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3f9a2c4d1e48f6a5b8c0d2e4f6a8b1c, type: 3}
+  m_Name: TouchControls
   m_EditorClassIdentifier: 
 
 --- !u!1 &10
@@ -1816,8 +1830,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 60}
   serializedVersion: 10
-  m_LocalRotation: {x: 0.129933, y: 0.000000, z: 0.000000, w: 0.991523}
-  m_LocalPosition: {x: 0.0000, y: 1.1500, z: -3.0000}
+  m_LocalRotation: {x: -0.129933, y: 0.000000, z: 0.000000, w: 0.991523}
+  m_LocalPosition: {x: 0.0000, y: 1.1500, z: 3.0000}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
