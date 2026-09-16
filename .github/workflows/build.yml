@@ -35,6 +35,10 @@ jobs:
             sudo chmod -R 777 /opt/unityhub
           fi
           ls -la /opt/unityhub/unityhub
+          # The action spawns the Hub via a `unity-hub` wrapper (its own install
+          # script normally creates this; ours replaces that script).
+          printf '#!/bin/bash\nxvfb-run --auto-servernum /opt/unityhub/unityhub "$@" 2>/dev/null' | sudo tee /usr/bin/unity-hub > /dev/null
+          sudo chmod 777 /usr/bin/unity-hub
 
       - name: Setup Unity (2022.3.76f1 + Android modules)
         uses: buildalon/unity-setup@v2
