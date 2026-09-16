@@ -7,15 +7,23 @@ jobs:
   activate:
     name: Generate .alf activation file
     runs-on: ubuntu-latest
+    container:
+      image: unityci/editor:ubuntu-2022.3.76f1-android-3
     steps:
-      - name: Request activation file
-        id: getManualLicenseFile
-        uses: game-ci/unity-request-activation-file@v2
-        with:
-          unityVersion: '2022.3.76f1'
+      - name: Create manual activation file
+        run: |
+          cd /github/workspace
+          /opt/unity/Editor/Unity \
+            -batchmode -nographics -createManualActivationFile \
+            -logFile /github/workspace/alf-request.log -quit || true
+          echo "--- workspace contents ---"
+          ls -la /github/workspace/
+          test -f /github/workspace/Unity_v*.alf
 
       - name: Upload .alf artifact
         uses: actions/upload-artifact@v4
         with:
           name: manual-activation-file
-          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
+          path: |
+            /github/workspace/Unity_v*.alf
+            /github/workspace/alf-request.log
