@@ -15,13 +15,11 @@ using UnityEngine.SceneManagement;
 public static class SceneRebuild
 {
     private const string DuckFbx = "Assets/Duck/duck.fbx";
-    private const string GroundFbx = "Assets/Duck/ground.fbx";
     private const string ScenePath = "Assets/Scenes/Main.unity";
 
     public static void Rebuild()
     {
         LogImportedSubassets(DuckFbx);
-        LogImportedSubassets(GroundFbx);
 
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
@@ -35,8 +33,8 @@ public static class SceneRebuild
         }
         var duck = (GameObject)Object.Instantiate(duckPrefab);
         duck.name = "Duck";
-        // Feet rest on the ground plane (top surface at y=0); lowest mesh
-        // vertex sits ~0.065 below the duck origin.
+        // Duck origin at y=0.07; lowest mesh vertex sits ~0.065 below the
+        // duck origin, so the feet hover just above y=0.
         duck.transform.SetPositionAndRotation(new Vector3(0f, 0.07f, 0f), Quaternion.Euler(0f, 90f, 0f));
         SceneManager.MoveGameObjectToScene(duck, scene);
 
@@ -88,42 +86,16 @@ public static class SceneRebuild
         duck.AddComponent<Credits>();
         duck.AddComponent<TouchControls>();
 
-        // --- Ground: instantiate the imported ground, or a plane fallback. ---
-        GameObject ground;
-        var groundPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(GroundFbx);
-        if (groundPrefab != null)
-        {
-            ground = (GameObject)Object.Instantiate(groundPrefab);
-            Debug.Log("SceneRebuild: ground instantiated from " + GroundFbx);
-        }
-        else
-        {
-            Debug.LogWarning("SceneRebuild: " + GroundFbx + " did not load; using a procedural plane.");
-            ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
-            ground.transform.localScale = new Vector3(2f, 1f, 2f);
-        }
-        ground.name = "Ground";
-        // The FBX imports standing upright (20 wide, 20 TALL, 0.2 thick) --
-        // it was a vertical black wall filling the camera's whole view.
-        // Lay it flat: -90 deg about X maps local Z (thickness) to world Y.
-        // The mesh spans local y in [-0.2, 0] (top face at the origin), so
-        // position y=0 puts the top surface exactly at y=0 for the duck's feet.
-        ground.transform.SetPositionAndRotation(
-            Vector3.zero, Quaternion.Euler(-90f, 0f, 0f));
-        SceneManager.MoveGameObjectToScene(ground, scene);
-        foreach (var mr in ground.GetComponentsInChildren<MeshRenderer>(true))
-        {
-            var mf = mr.GetComponent<MeshFilter>();
-            Debug.Log("SceneRebuild: ground renderer mesh=" +
-                      (mf != null && mf.sharedMesh != null ? "'" + mf.sharedMesh.name + "'" : "null") +
-                      " material=" + (mr.sharedMaterial != null ? "'" + mr.sharedMaterial.name + "'" : "null"));
-        }
+        // --- No ground plane (removed in v1.6.0): the cloud background fills
+        // the entire screen, so the duck walks against pure sky. ---
 
-        // --- Background: Tyler's cloud photo on a plane directly behind the
-        // duck (his verified recipe: plane rotated 90 about X, new material
-        // with the texture). Unlit/Texture so the photo renders full-bright
-        // like a skybox -- a lit Standard material goes black here because
-        // the scene's directional light shines from behind the plane.
+        // --- Background: Tyler's cloud photo fills the entire screen (v1.6.0:
+        // the gray ground plane is gone, so the sky plane is enlarged to
+        // cover the whole camera view). Tyler's verified recipe: plane
+        // rotated 90 about X, new material with the texture. Unlit/Texture
+        // so the photo renders full-bright like a skybox -- a lit Standard
+        // material goes black here because the scene's directional light
+        // shines from behind the plane.
         // V is flipped so the image isn't upside down after the X rotation. ---
         var bgTex = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Duck/cloud_bg.jpg");
         if (bgTex != null)
@@ -140,8 +112,10 @@ public static class SceneRebuild
             bg.transform.SetPositionAndRotation(
                 new Vector3(0f, 2f, -12f), Quaternion.Euler(90f, 0f, 0f));
             // Plane is 10x10 in local XZ; after the X rotation local Z maps
-            // to world Y, so scale Z for height.
-            bg.transform.localScale = new Vector3(4f, 1f, 2.5f);
+            // to world Y, so scale Z for height. 60x40 comfortably covers the
+            // full camera frustum at this distance (FOV 40, plane ~15 units
+            // out needs ~+/-13 wide, ~+/-6 tall).
+            bg.transform.localScale = new Vector3(6f, 1f, 4f);
             SceneManager.MoveGameObjectToScene(bg, scene);
             Debug.Log("SceneRebuild: cloud photo background (plane) attached.");
         }
